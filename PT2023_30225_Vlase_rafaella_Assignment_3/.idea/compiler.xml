@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PT2023_30225_Vlase_rafaella_Assignment_3" />
+        <module name="PT2023_30225_Vlase_Rafaella_Assignment_3" />
       </profile>
     </annotationProcessing>
   </component>
