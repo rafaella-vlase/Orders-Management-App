@@ -20,12 +20,15 @@ public class Main extends JFrame
 
         clientButton = new JButton("Clients Operations");
         contentPanel.add(clientButton);
+        clientButton.setBackground(new Color(229, 202, 225));
 
         productButton = new JButton("Products Operations");
         contentPanel.add(productButton);
+        productButton.setBackground(new Color(229, 202, 225));
 
         orderButton = new JButton("Orders Operations");
         contentPanel.add(orderButton);
+        orderButton.setBackground(new Color(229, 202, 225));
 
         setVisible(true);
         setResizable(false);
@@ -33,7 +36,8 @@ public class Main extends JFrame
         addActionListeners();
     }
 
-    private void addActionListeners() {
+    private void addActionListeners()
+    {
         clientButton.addActionListener(e -> {
             setVisible(false);
             new ViewClients().setVisible(true);

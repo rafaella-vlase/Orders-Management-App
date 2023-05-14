@@ -6,14 +6,24 @@ public class Client
     private String name;
     private String address;
     private String email;
-
-    public Client() {
-    }
-
     public Client(int id, String name, String address, String email)
     {
         super();
         this.id = id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+    }
+
+    public Client(int id)
+    {
+        super();
+        this.id = id;
+    }
+
+    public  Client(String name, String address, String email)
+    {
+        super();
         this.name = name;
         this.address = address;
         this.email = email;

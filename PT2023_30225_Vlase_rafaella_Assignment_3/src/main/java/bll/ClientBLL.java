@@ -7,6 +7,8 @@ import bll.validators.Validator;
 import dao.ClientDAO;
 import model.Client;
 
+import javax.swing.table.DefaultTableModel;
+
 public class ClientBLL
 {
     private List<Validator<Client>> validators;
@@ -14,7 +16,7 @@ public class ClientBLL
 
     public ClientBLL()
     {
-        validators = new ArrayList<Validator<Client>>();
+        validators = new ArrayList<>();
         clientDAO = new ClientDAO();
     }
 
@@ -37,7 +39,7 @@ public class ClientBLL
         return clientList;
     }
 
-    public Client insertClient(Client c)
+    public int insertClient(Client c)
     {
         return clientDAO.insert(c);
     }
@@ -60,4 +62,8 @@ public class ClientBLL
         }
     }
 
+    public DefaultTableModel initClientsTable()
+    {
+        return clientDAO.makeTable();
+    }
 }

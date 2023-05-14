@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import connection.ConnectionFactory;
 
-import javax.swing.text.html.parser.Entity;
+import javax.swing.table.DefaultTableModel;
 
 public class AbstractDAO<T>
 {
@@ -66,7 +66,6 @@ public class AbstractDAO<T>
         return null;
     }
 
-
     public T findById(int id) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -88,7 +87,6 @@ public class AbstractDAO<T>
         }
         return null;
     }
-
 
     private List<T> createObjects(ResultSet resultSet) {
         List<T> list = new ArrayList<T>();
@@ -188,7 +186,7 @@ public class AbstractDAO<T>
         return sb.toString();
     }
 
-    public T insert(T t)
+    public int insert(T t)
     {
         // TODO:
         Connection conn = null;
@@ -209,7 +207,7 @@ public class AbstractDAO<T>
             }
 
             statement.executeUpdate();
-            return t;
+            return (int) t;
         } catch (SQLException | IllegalAccessException e) {
             LOGGER.log(Level.WARNING, type.getName() + "DAO:insert " + e.getMessage());
         } finally {
@@ -217,7 +215,7 @@ public class AbstractDAO<T>
             ConnectionFactory.close(statement);
             ConnectionFactory.close(conn);
         }
-        return t;
+        return (int) t;
     }
 
     public T update(T t)
@@ -274,4 +272,35 @@ public class AbstractDAO<T>
         }
         return null;
     }
+
+    public DefaultTableModel makeTable()
+    {
+        String[] columnNames = new String[type.getDeclaredFields().length];
+        int idx = 0;
+        for (Field field : type.getDeclaredFields()) {
+            field.setAccessible(true);
+            columnNames[idx] = field.getName();
+            idx++;
+        }
+
+        List<T> tableEntryList = findAll();
+        Object[][] data = new Object[tableEntryList.size()][idx];
+
+        int index = 0;
+        for(T t: tableEntryList){
+            ArrayList<Object> rowData = new ArrayList<>();
+            for(Field field : type.getDeclaredFields()) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(t);
+                    rowData.add(value);
+                } catch (Exception e) {e.printStackTrace();}
+
+            }
+            data[index] = rowData.toArray();
+            index++;
+        }
+        return new DefaultTableModel(data, columnNames);
+    }
+
 }

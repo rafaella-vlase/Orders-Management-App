@@ -38,7 +38,7 @@ public class ProductBLL
         return productList;
     }
 
-    public Product insertProduct(Product p)
+    public int insertProduct(Product p)
     {
         return productDAO.insert(p);
     }

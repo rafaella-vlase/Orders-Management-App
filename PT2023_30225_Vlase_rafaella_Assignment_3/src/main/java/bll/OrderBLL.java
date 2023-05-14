@@ -38,7 +38,7 @@ public class OrderBLL
         return orderList;
     }
 
-    public Order insertOrder(Order o)
+    public int insertOrder(Order o)
     {
         return orderDAO.insert(o);
     }
