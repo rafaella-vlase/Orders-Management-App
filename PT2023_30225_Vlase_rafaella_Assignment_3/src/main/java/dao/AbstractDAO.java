@@ -1,5 +1,4 @@
 package dao;
-
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import connection.ConnectionFactory;
-
 import javax.swing.table.DefaultTableModel;
 
 public class AbstractDAO<T>
@@ -295,12 +293,10 @@ public class AbstractDAO<T>
                     Object value = field.get(t);
                     rowData.add(value);
                 } catch (Exception e) {e.printStackTrace();}
-
             }
             data[index] = rowData.toArray();
             index++;
         }
         return new DefaultTableModel(data, columnNames);
     }
-
 }

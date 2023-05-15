@@ -1,9 +1,11 @@
 package bll;
 
+import bll.validators.ProductStockValidator;
 import bll.validators.Validator;
 import dao.ProductDAO;
 import model.Product;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,17 +17,18 @@ public class ProductBLL
 
     public ProductBLL()
     {
-        validators = new ArrayList<Validator<Product>>();
+        validators = new ArrayList<>();
+        validators.add(new ProductStockValidator());
         productDAO = new ProductDAO();
     }
 
     public Product findProductById(int id)
     {
-        Product c = productDAO.findById(id);
-        if (c == null) {
+        Product p = productDAO.findById(id);
+        if (p == null) {
             throw new NoSuchElementException("The product with id =" + id + " was not found!");
         }
-        return c;
+        return p;
     }
 
     public List<Product> findAllProducts()
@@ -59,6 +62,10 @@ public class ProductBLL
         {
             validator.validate(p);
         }
+    }
+
+    public DefaultTableModel initProductsTable(){
+        return productDAO.makeTable();
     }
 
 }

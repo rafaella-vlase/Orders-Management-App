@@ -55,6 +55,8 @@ public class ViewClients extends JFrame
         clientsPanel.setBackground(new Color(229, 202, 225));
         tableModel = new ClientBLL().initClientsTable();
         clientsTable = new JTable(tableModel);
+        clientsTable.setOpaque(true);
+        clientsTable.setFillsViewportHeight(true);
         clientsTable.setBackground(new Color(229, 202, 225));
         clientsTable.setDefaultEditor(Object.class, null);
         tableScrollPane = new JScrollPane(clientsTable);

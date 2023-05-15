@@ -3,20 +3,34 @@ package model;
 public class Product
 {
     private int id;
-    private double price;
+    private float price;
     private String product_name;
     private int stock;
 
     public Product(){
     }
 
-    public Product(int id, double price, String product_name, int stock)
+    public Product(int id, float price, String product_name, int stock)
     {
         super();
         this.id = id;
         this.price = price;
         this.product_name = product_name;
         this.stock = stock;
+    }
+
+    public Product(String name, int stock, float price)
+    {
+        super();
+        this.product_name = name;
+        this.stock = stock;
+        this.price = price;
+    }
+
+    public Product(int id)
+    {
+        super();
+        this.id = id;
     }
 
     public int getId() {
@@ -27,11 +41,11 @@ public class Product
         this.id = id;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

@@ -2,35 +2,36 @@ package bll;
 
 import bll.validators.Validator;
 import dao.OrderDAO;
-import model.Order;
+import model.Orders;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class OrderBLL
 {
-    private List<Validator<Order>> validators;
+    private List<Validator<Orders>> validators;
     private OrderDAO orderDAO;
 
     public OrderBLL()
     {
-        validators = new ArrayList<Validator<Order>>();
+        validators = new ArrayList<Validator<Orders>>();
         orderDAO = new OrderDAO();
     }
 
-    public Order findOrderById(int id)
+    public Orders findOrderById(int id)
     {
-        Order c = orderDAO.findById(id);
+        Orders c = orderDAO.findById(id);
         if (c == null) {
             throw new NoSuchElementException("The order with id =" + id + " was not found!");
         }
         return c;
     }
 
-    public List<Order> findAllOrders()
+    public List<Orders> findAllOrders()
     {
-        List<Order> orderList = orderDAO.findAll();
+        List<Orders> orderList = orderDAO.findAll();
         if(orderList == null)
         {
             throw new NoSuchElementException("No order found");
@@ -38,22 +39,26 @@ public class OrderBLL
         return orderList;
     }
 
-    public int insertOrder(Order o)
+    public int insertOrder(Orders o)
     {
         return orderDAO.insert(o);
     }
 
-    public void deleteOrder(Order o)
+    public void deleteOrder(Orders o)
     {
         orderDAO.delete(o);
     }
 
-    public void validateOrder(Order o)
+    public void validateOrder(Orders o)
     {
-        for(Validator<Order> validator : validators)
+        for(Validator<Orders> validator : validators)
         {
             validator.validate(o);
         }
     }
 
+    public DefaultTableModel initOrdersTable()
+    {
+        return orderDAO.makeTable();
+    }
 }

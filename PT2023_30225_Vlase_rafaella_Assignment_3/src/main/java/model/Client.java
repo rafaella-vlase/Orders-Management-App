@@ -28,7 +28,6 @@ public class Client
         this.address = address;
         this.email = email;
     }
-
     public int getId() {
         return id;
     }
