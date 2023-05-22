@@ -43,7 +43,7 @@ public class ProductBLL
 
     public int insertProduct(Product p)
     {
-        return productDAO.insert(p);
+        return productDAO.insert(p).getId();
     }
 
     public void updateProduct(Product p)

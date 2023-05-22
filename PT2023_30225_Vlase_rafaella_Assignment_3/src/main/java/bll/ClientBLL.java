@@ -41,7 +41,7 @@ public class ClientBLL
 
     public int insertClient(Client c)
     {
-        return clientDAO.insert(c);
+        return clientDAO.insert(c).getId();
     }
 
     public void updateClient(Client c)

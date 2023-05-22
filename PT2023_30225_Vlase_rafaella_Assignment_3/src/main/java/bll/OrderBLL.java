@@ -41,7 +41,7 @@ public class OrderBLL
 
     public int insertOrder(Orders o)
     {
-        return orderDAO.insert(o);
+        return orderDAO.insert(o).getId();
     }
 
     public void deleteOrder(Orders o)

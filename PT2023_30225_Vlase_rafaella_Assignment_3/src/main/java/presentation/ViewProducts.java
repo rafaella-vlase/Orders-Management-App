@@ -141,7 +141,7 @@ public class ViewProducts extends JFrame
         contentPanel.add(deleteButton);
         backButton = new JButton("Back");
         backButton.setBackground(new Color(229, 202, 225));
-        backButton.setBounds(450, 10, 150, 70);
+        backButton.setBounds(400, 10, 200, 70);
         contentPanel.add(backButton);
     }
 

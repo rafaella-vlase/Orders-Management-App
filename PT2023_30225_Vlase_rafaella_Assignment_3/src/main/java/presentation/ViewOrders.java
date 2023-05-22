@@ -41,6 +41,7 @@ public class ViewOrders extends JFrame
         super("Orders Table");
         setSize(650, 530);
         contentPanel = new JPanel(null);
+        contentPanel.setBackground(new Color(158, 129, 173));
         setContentPane(contentPanel);
         makeTables();
         makeOrders();
@@ -53,10 +54,15 @@ public class ViewOrders extends JFrame
     private void makeTables()
     {
         ordersPanel = new JPanel(new BorderLayout());
+        ordersPanel.setBackground(new Color(229, 202, 225));
         ordersLabel = new JLabel("Orders:");
         ordersLabel.setBounds(10, 10, 50, 20);
         ordersTableModel = new OrderBLL().initOrdersTable();
         ordersTable = new JTable(ordersTableModel);
+        ordersTable.setOpaque(true);
+        ordersTable.setFillsViewportHeight(true);
+        ordersTable.setBackground(new Color(229, 202, 225));
+        //ordersTable.setBackground(new Color(229, 202, 225));
         ordersTable.setDefaultEditor(Object.class, null);
         ordersTableScrollPane = new JScrollPane(ordersTable);
         ordersPanel.add(ordersTableScrollPane);
@@ -64,10 +70,15 @@ public class ViewOrders extends JFrame
         contentPanel.add(ordersPanel);
 
         clientsPanel = new JPanel(new BorderLayout());
+        clientsPanel.setBackground(new Color(229, 202, 225));
         clientsLabel = new JLabel("Clients:");
         clientsLabel.setBounds(10, 10, 50, 20);
         clientsTableModel = new ClientBLL().initClientsTable();
         clientsTable = new JTable(clientsTableModel);
+        clientsTable.setOpaque(true);
+        clientsTable.setFillsViewportHeight(true);
+        clientsTable.setBackground(new Color(229, 202, 225));
+        //clientsTable.setBackground(new Color(229, 202, 225));
         clientsTable.setDefaultEditor(Object.class, null);
         clientsTableScrollPane = new JScrollPane(clientsTable);
         clientsPanel.add(clientsTableScrollPane);
@@ -75,10 +86,15 @@ public class ViewOrders extends JFrame
         contentPanel.add(clientsPanel);
 
         productsPanel = new JPanel(new BorderLayout());
+        productsPanel.setBackground(new Color(229, 202, 225));
         productsLabel = new JLabel("Products:");
         productsLabel.setBounds(10, 10, 50, 20);
         productsTableModel = new ProductBLL().initProductsTable();
         productsTable = new JTable(productsTableModel);
+        productsTable.setOpaque(true);
+        productsTable.setFillsViewportHeight(true);
+        productsTable.setBackground(new Color(229, 202, 225));
+        //productsTable.setBackground(new Color(229, 202, 225));
         productsTable.setDefaultEditor(Object.class, null);
         productsTableScrollPane = new JScrollPane(productsTable);
         productsPanel.add(productsTableScrollPane);
@@ -98,16 +114,19 @@ public class ViewOrders extends JFrame
         contentPanel.add(quantityField);
 
         insertButton = new JButton("Add Order");
+        insertButton.setBackground(new Color(229, 202, 225));
         insertButton.setEnabled(false);
         insertButton.setBounds(320, 340, 145, 50);
         contentPanel.add(insertButton);
 
         deleteButton = new JButton("Delete Orders");
+        deleteButton.setBackground(new Color(229, 202, 225));
         deleteButton.setEnabled(false);
         deleteButton.setBounds(480, 340, 145, 50);
         contentPanel.add(deleteButton);
 
         backButton = new JButton("Back");
+        backButton.setBackground(new Color(229, 202, 225));
         backButton.setBounds(320, 400, 145, 50);
         contentPanel.add(backButton);
     }

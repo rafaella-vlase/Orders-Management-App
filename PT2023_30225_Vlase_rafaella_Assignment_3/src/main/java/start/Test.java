@@ -25,6 +25,6 @@ public class Test {
         }
 
         // obtain field-value pairs for object through reflection
-        ReflectionExample.retrieveProperties(product);
+        //ReflectionExample.retrieveProperties(product);
     }
 }
