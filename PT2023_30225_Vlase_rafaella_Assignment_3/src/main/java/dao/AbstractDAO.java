@@ -2,10 +2,7 @@ package dao;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,13 +29,28 @@ public class AbstractDAO<T>
                 type.getSimpleName() +
                 " WHERE id = ?";
     }
+    
+    private String createSelectAll() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
 
-    private String createSelectAll()
-    {
-        return "SELECT * FROM `" +
-                type.getSimpleName() +
-                "`";
+        Field[] fields = type.getDeclaredFields();
+        int fieldCount = fields.length;
+        int insertedFieldCount = 0;
+
+        for (Field field : fields) {
+            sb.append(field.getName());
+            if (++insertedFieldCount < fieldCount) {
+                sb.append(", ");
+            }
+        }
+
+        sb.append(" FROM `");
+        sb.append(type.getSimpleName());
+        sb.append("`");
+        return sb.toString();
     }
+
 
     public List<T> findAll()
     {
@@ -105,31 +117,41 @@ public class AbstractDAO<T>
         return list;
     }
 
-    private String createInsert()
-    {
+    private String createInsert() {
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
         sb.append(type.getSimpleName());
         sb.append(" (");
 
         Field[] fields = type.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++)
-        {
-            Field field = fields[i];
+        int fieldCount = fields.length;
+        int insertedFieldCount = 0;
+
+        for (Field field : fields) {
+            if (field.getName().equals("id")) {
+                continue; // Skip the primary key field
+            }
+
             sb.append(field.getName());
-            if (i != fields.length - 1) {
+            if (++insertedFieldCount < fieldCount - 1) {
                 sb.append(", ");
             }
         }
+
         sb.append(") VALUES (");
 
-        for (int i = 0; i < fields.length; i++)
-        {
+        insertedFieldCount = 0;
+        for (Field field : fields) {
+            if (field.getName().equals("id")) {
+                continue; // Skip the primary key field
+            }
+
             sb.append("?");
-            if (i != fields.length - 1) {
+            if (++insertedFieldCount < fieldCount - 1) {
                 sb.append(", ");
             }
         }
+
         sb.append(")");
         return sb.toString();
     }
@@ -161,20 +183,20 @@ public class AbstractDAO<T>
                 "` WHERE id = ?";
     }
 
-    public T insert(T t)
-    {
-        // TODO:
+    public T insert(T t) {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         String query = createInsert();
         try {
             conn = ConnectionFactory.getConnection();
-            statement = conn.prepareStatement(query);
+            statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             int index = 1;
-            for (Field field : type.getDeclaredFields())
-            {
+            for (Field field : type.getDeclaredFields()) {
+                if (field.getName().equals("id")) {
+                    continue; // Skip the primary key field
+                }
                 field.setAccessible(true);
                 Object value = field.get(t);
                 statement.setObject(index, value);
@@ -182,15 +204,26 @@ public class AbstractDAO<T>
             }
 
             statement.executeUpdate();
+
+            // Retrieve the generated keys (if any)
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                // Assuming the primary key field is named "id"
+                Field idField = type.getDeclaredField("id");
+                idField.setAccessible(true);
+                int generatedId = generatedKeys.getInt(1);
+                idField.set(t, generatedId);
+            }
+
             return t;
-        } catch (SQLException | IllegalAccessException e) {
+        } catch (SQLException | IllegalAccessException | NoSuchFieldException e) {
             LOGGER.log(Level.WARNING, type.getName() + "DAO:insert " + e.getMessage());
         } finally {
             ConnectionFactory.close(resultSet);
             ConnectionFactory.close(statement);
             ConnectionFactory.close(conn);
         }
-        return t;
+        return null;
     }
 
     public T update(T t)
