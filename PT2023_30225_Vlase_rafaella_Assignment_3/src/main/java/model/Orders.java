@@ -25,12 +25,12 @@ public class Orders
         this.id_product = id_product;
     }
 
-    public Orders(int id_client, int id_product, int quantity)
+    public Orders(int quantity, int id_client, int id_product)
     {
         this();
+        this.quantity = quantity;
         this.id_client = id_client;
         this.id_product = id_product;
-        this.quantity = quantity;
     }
 
     public Orders(int id)

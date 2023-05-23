@@ -107,27 +107,31 @@ public class AbstractDAO<T>
 
     private String createInsert()
     {
-        StringBuilder stringBuilder = new StringBuilder("INSERT INTO `" + type.getSimpleName() + "` (");
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO ");
+        sb.append(type.getSimpleName());
+        sb.append(" (");
 
-        for(Field field : type.getDeclaredFields()){
-            if(field.getName().equals("id"))
-                continue;
-            field.setAccessible(true);
-            stringBuilder.append(field.getName()).append(", ");
+        Field[] fields = type.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++)
+        {
+            Field field = fields[i];
+            sb.append(field.getName());
+            if (i != fields.length - 1) {
+                sb.append(", ");
+            }
         }
-        stringBuilder.setLength(stringBuilder.length() - 2);
-        stringBuilder.append(") VALUES (");
+        sb.append(") VALUES (");
 
-        for(Field field: type.getDeclaredFields()){
-            if(field.getName().equals("id"))
-                continue;
-            field.setAccessible(true);
-            stringBuilder.append("?, ");
+        for (int i = 0; i < fields.length; i++)
+        {
+            sb.append("?");
+            if (i != fields.length - 1) {
+                sb.append(", ");
+            }
         }
-        stringBuilder.setLength(stringBuilder.length() - 2);
-        stringBuilder.append(")");
-        return stringBuilder.toString();
-
+        sb.append(")");
+        return sb.toString();
     }
 
     private String createUpdate()
@@ -224,25 +228,31 @@ public class AbstractDAO<T>
         return t;
     }
 
-    public T delete(T t)
-    {
+    public T delete(T t) {
         Connection connection = null;
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
         String query = createDelete();
         try {
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(query);
-            statement.setInt(1, (Integer) t);
+            Field idField = type.getDeclaredFields()[0];
+            idField.setAccessible(true);
+            int idToDelete = Integer.parseInt(idField.get(t).toString());
+            statement.setInt(1, idToDelete);
             statement.executeUpdate();
-            return t;
         } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, type.getName() + "DAO:remove " + e.getMessage());
+            LOGGER.log(Level.WARNING, type.getName() + "DAO:deleteClient " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         } finally {
+            ConnectionFactory.close(resultSet);
             ConnectionFactory.close(statement);
             ConnectionFactory.close(connection);
         }
         return null;
     }
+
 
     public DefaultTableModel makeTable()
     {
