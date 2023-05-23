@@ -238,7 +238,6 @@ public class ViewProducts extends JFrame
         });
     }
 
-
     private void clearInsertFields()
     {
         insertNameField.setText("");
@@ -252,6 +251,4 @@ public class ViewProducts extends JFrame
         updateStockField.setText("");
         updatePriceField.setText("");
     }
-
-
 }

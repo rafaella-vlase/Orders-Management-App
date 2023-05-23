@@ -2,9 +2,6 @@ package model;
 
 import bll.ClientBLL;
 import bll.ProductBLL;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class Orders
 {

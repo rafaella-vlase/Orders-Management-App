@@ -39,19 +39,18 @@ public class AbstractDAO<T>
         int fieldCount = fields.length;
         int insertedFieldCount = 0;
 
-        for (Field field : fields) {
+        for (Field field : fields)
+        {
             sb.append(field.getName());
             if (++insertedFieldCount < fieldCount) {
                 sb.append(", ");
             }
         }
-
         sb.append(" FROM `");
         sb.append(type.getSimpleName());
         sb.append("`");
         return sb.toString();
     }
-
 
     public List<T> findAll()
     {
@@ -286,7 +285,6 @@ public class AbstractDAO<T>
         }
         return null;
     }
-
 
     public DefaultTableModel makeTable()
     {
