@@ -29,8 +29,9 @@ public class AbstractDAO<T>
                 type.getSimpleName() +
                 " WHERE id = ?";
     }
-    
-    private String createSelectAll() {
+
+    private String createSelectAll()
+    {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ");
 
@@ -74,7 +75,8 @@ public class AbstractDAO<T>
         return null;
     }
 
-    public T findById(int id) {
+    public T findById(int id)
+    {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -96,7 +98,8 @@ public class AbstractDAO<T>
         return null;
     }
 
-    private List<T> createObjects(ResultSet resultSet) {
+    private List<T> createObjects(ResultSet resultSet)
+    {
         List<T> list = new ArrayList<T>();
         try {
             Constructor<T> constructor = type.getDeclaredConstructor();
@@ -117,7 +120,8 @@ public class AbstractDAO<T>
         return list;
     }
 
-    private String createInsert() {
+    private String createInsert()
+    {
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
         sb.append(type.getSimpleName());
@@ -127,31 +131,28 @@ public class AbstractDAO<T>
         int fieldCount = fields.length;
         int insertedFieldCount = 0;
 
-        for (Field field : fields) {
+        for (Field field : fields)
+        {
             if (field.getName().equals("id")) {
-                continue; // Skip the primary key field
+                continue;
             }
-
             sb.append(field.getName());
             if (++insertedFieldCount < fieldCount - 1) {
                 sb.append(", ");
             }
         }
-
         sb.append(") VALUES (");
-
         insertedFieldCount = 0;
-        for (Field field : fields) {
+        for (Field field : fields)
+        {
             if (field.getName().equals("id")) {
-                continue; // Skip the primary key field
+                continue;
             }
-
             sb.append("?");
             if (++insertedFieldCount < fieldCount - 1) {
                 sb.append(", ");
             }
         }
-
         sb.append(")");
         return sb.toString();
     }
@@ -183,7 +184,8 @@ public class AbstractDAO<T>
                 "` WHERE id = ?";
     }
 
-    public T insert(T t) {
+    public T insert(T t)
+    {
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -193,22 +195,20 @@ public class AbstractDAO<T>
             statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             int index = 1;
-            for (Field field : type.getDeclaredFields()) {
+            Field[] fields = type.getDeclaredFields();
+            for (Field field : fields) {
                 if (field.getName().equals("id")) {
-                    continue; // Skip the primary key field
+                    continue;
                 }
                 field.setAccessible(true);
                 Object value = field.get(t);
                 statement.setObject(index, value);
                 index++;
             }
-
             statement.executeUpdate();
-
-            // Retrieve the generated keys (if any)
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                // Assuming the primary key field is named "id"
+            if (generatedKeys.next())
+            {
                 Field idField = type.getDeclaredField("id");
                 idField.setAccessible(true);
                 int generatedId = generatedKeys.getInt(1);
@@ -261,7 +261,8 @@ public class AbstractDAO<T>
         return t;
     }
 
-    public T delete(T t) {
+    public T delete(T t)
+    {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -291,7 +292,8 @@ public class AbstractDAO<T>
     {
         String[] columnNames = new String[type.getDeclaredFields().length];
         int idx = 0;
-        for (Field field : type.getDeclaredFields()) {
+        for (Field field : type.getDeclaredFields())
+        {
             field.setAccessible(true);
             columnNames[idx] = field.getName();
             idx++;
@@ -301,7 +303,8 @@ public class AbstractDAO<T>
         Object[][] data = new Object[tableEntryList.size()][idx];
 
         int index = 0;
-        for(T t: tableEntryList){
+        for(T t: tableEntryList)
+        {
             ArrayList<Object> rowData = new ArrayList<>();
             for(Field field : type.getDeclaredFields()) {
                 field.setAccessible(true);

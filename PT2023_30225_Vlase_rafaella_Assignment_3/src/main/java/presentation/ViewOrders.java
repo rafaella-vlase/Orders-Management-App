@@ -187,12 +187,11 @@ public class ViewOrders extends JFrame
 
             productBLL.updateProduct(product);
             OrderBLL orderBLL = new OrderBLL();
-            Orders order = new Orders(clientID, productID, quantity);
+            Orders order = new Orders(quantity, clientID, productID);
             int idValue = orderBLL.insertOrder(order);
             order.setId(idValue);
             productsTable.setValueAt(product.getStock(), productsTable.getSelectedRow(), 2);
-            ordersTableModel.addRow(new Object[]{idValue, clientID, productID, quantity});
-            order.makeBill();
+            ordersTableModel.addRow(new Object[]{idValue, quantity, clientID, productID});
         });
 
         deleteButton.addActionListener(e -> {

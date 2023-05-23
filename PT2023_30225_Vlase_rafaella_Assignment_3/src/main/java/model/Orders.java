@@ -70,17 +70,6 @@ public class Orders
         this.id_product = id_product;
     }
 
-    public void makeBill(){
-        String filename = "src/main/java/orders/order_no" + this.id + ".txt";
-        try{
-            File myFile = new File(filename);
-            myFile.createNewFile();
-            FileWriter myWriter = new FileWriter(filename);
-            myWriter.write(this.toString());
-            myWriter.close();
-        } catch (IOException ignored){}
-    }
-
     @Override
     public String toString()
     {

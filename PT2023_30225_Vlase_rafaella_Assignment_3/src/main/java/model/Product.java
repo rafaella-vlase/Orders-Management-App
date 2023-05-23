@@ -19,12 +19,12 @@ public class Product
         this.stock = stock;
     }
 
-    public Product(String name, int stock, float price)
+    public Product(float price, String name, int stock)
     {
         super();
+        this.price = price;
         this.product_name = name;
         this.stock = stock;
-        this.price = price;
     }
 
     public Product(int id)

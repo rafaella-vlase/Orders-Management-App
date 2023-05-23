@@ -202,8 +202,8 @@ public class ViewProducts extends JFrame
             stock = Integer.parseInt(insertStockField.getText());
             price = Float.parseFloat(insertPriceField.getText());
             ProductBLL productBLL = new ProductBLL();
-            int idValue = productBLL.insertProduct(new Product(name, stock, price));
-            tableModel.addRow(new Object[]{idValue, name, stock, price});
+            int idValue = productBLL.insertProduct(new Product(price, name, stock));
+            tableModel.addRow(new Object[]{idValue, price, name, stock});
             clearInsertFields();
         });
 
